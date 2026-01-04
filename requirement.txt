@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+librosa
+tensorflow
+tensorflow_hub
+torch
+transformers
+requests
+numpy
