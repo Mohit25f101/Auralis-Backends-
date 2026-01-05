@@ -94,7 +94,8 @@ def analyze_audio(text, sounds):
     rail_words = ["train", "platform", "coach"]
 
     # Emergency ke liye
-    emergency_words = ["help", "fire", "emergency"]
+    emergency_words = ["help", "fire", "emergency","police","accident",]
+    emergency_sounds = ["siren","scream","alarm","glass","shouting"]
 
     # Public jagah ki awaazein
     public_sounds = ["crowd", "conversation"]
@@ -114,6 +115,12 @@ def analyze_audio(text, sounds):
     # Agar text me flight related baat
     # aur sound me crowd / conversation
     # to most probably airport
+
+    # -------EMERGENCY SOUNDS--------
+    is_emergency_text = any(w in text for w in emergency_words)
+    is_emergency_sound = any(
+        any(es in s for es in emergency_sounds) for s in sound_labels
+    )
 
     if any(w in text for w in airport_words) and any(s in sound_labels for s in public_sounds):
         location = "Airport"
@@ -146,7 +153,15 @@ def analyze_audio(text, sounds):
 
     # ---------- FINAL RESULT ----------
     # Backend se frontend ko yahi JSON milega
-
+    if is_emergency_text or is_emergency_sound:
+        return {
+            "summary": "Emergency situation detected based on distress signals in the audio.",
+            "location": location,
+            "situation": "Emergency",
+            "confidence": 0.95,
+            "confidence_reason": "High confidence due to presence of emergency keywords or sounds.",
+            "evidence": sound_labels
+        }
     summary = f"This audio likely comes from a {location.lower()} during {situation.lower()}, inferred from {' '.join(evidence)} with a confidence of {confidence}."
     return {
         "summary": summary,
