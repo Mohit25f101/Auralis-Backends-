@@ -39,6 +39,17 @@ app = FastAPI(title="Auralis API")
 def root():
     return RedirectResponse(url= "/docs")
 
+#CORS ==== added on 9th jan ,2026 ; 7:40 p.m. ====
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Whisper model load ho raha hai
 # Ye audio sunke bataata hai "kya bola gaya"
